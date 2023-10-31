@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: green;
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            margin: 20px 0;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+            cursor: pointer;
+            padding: 0.4%;
+        }
+        .pagination li.active {
+            background-color: green;
+            color: white;
+        }
+
+        .pagination li:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Mike</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>gerard</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Samuel</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>KIngsley</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>David</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Funke</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Ini</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Ona</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Maguire</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Tunde</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Wealth</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Tope</td>
+                <td>20</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <ul class="pagination" id="pagination"></ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.getElementById("data-table")
+            const rows = table.tBodies[0].rows
+            const rowPerpage = 4
+            const totalPages = Math.ceil(rows.length / rowPerpage)
+            let currenPage = 1
+
+            function showPage(page) {
+                for (let i = 0; i < rows.length; i++) {
+                    rows[i].style.display = i >= (page - 1) * rowPerpage && i < page * rowPerpage ? "" : "none";
+                }
+            }
+
+            function updatePagination() {
+                const pagination = document.getElementById("pagination")
+                pagination.innerHTML = ""
+
+                if (totalPages <= 1) return;
+
+                const prevLi = document.createElement("li")
+                prevLi.innerHTML = "&larr;"
+                prevLi.classList.add("prev")
+                prevLi.addEventListener("click", () => {
+                    if (currenPage > 1) {
+                        currenPage--
+                        showPage(currenPage)
+                        updatePagination()
+                    }
+                })
+                pagination.appendChild(prevLi)
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement("li")
+                    li.textContent = i;
+                    if (i === currenPage) {
+                        li.classList.add("active")
+                    }
+                    li.addEventListener("click", () => {
+                        currenPage = i
+                        showPage(i)
+                        updatePagination()
+                    })
+                    pagination.appendChild(li)
+                }
+                const nextLi = document.createElement("li")
+                nextLi.innerHTML = "&rarr;"
+                nextLi.classList.add("next")
+                nextLi.addEventListener("click", () => {
+                    if (currenPage < totalPages) {
+                        currenPage++
+                        showPage(currenPage)
+                        updatePagination()
+                    }
+                })
+                pagination.appendChild(nextLi)
+            }
+
+            showPage(currenPage)
+            updatePagination()
+        })
+    </script>
+    
+</body>
+</html>
